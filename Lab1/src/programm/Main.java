@@ -1,4 +1,4 @@
-package Programm;
+package programm;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -19,21 +19,14 @@ public class Main {
 
             if (str.equals("--h")) {
                 printInstruction();
-            }
-
-            else if (isNumbers(str)){
+            } else if (isNumbers(str)){
                 double square = Math.pow(Float.parseFloat(str), 2);
                 System.out.printf("Квадрат = %.3f\nКорень = %.3f\n", square, Math.cbrt(square));
-            }
-
-            else if (withTwoNumbers(str, numbers)) {
+            } else if (withTwoNumbers(str, numbers)) {
                 System.out.printf("%.3f\n", (float) numbers[0] / numbers[1]);
-            }
-
-            else {
+            } else {
                 printSorted(str);
             }
-
         } while (!str.equals("q"));
     }
     public static void printInstruction(){
@@ -115,9 +108,19 @@ public class Main {
     public static void printSorted(String str){
         if (str == null || str.length() == 0 || str.equals("q")) return;
 
+        int count = 0;
         char[] arr = str.toCharArray();
+
         Arrays.sort(arr);
         str = new String(arr);
-        System.out.println(str);
+        if (arr[0] != arr[1]) count++;
+        if (arr[str.length()-1] != arr[str.length()-2]) count++;
+
+        for (int i = 1; i < str.length() - 1; i++){
+            if (arr[i] != arr[i-1] && arr[i] != arr[i+1]){
+                count++;
+            }
+        }
+        System.out.println(str + ' ' + count);
     }
 }
