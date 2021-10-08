@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public abstract class PeopleService {
-     private final static PeopleDAO dao = new PeopleDAO("src/main/PersonsFiles/");
+     private final static PeopleDAO dao = new PeopleDAO("src/main/resources/PersonsFiles/");
 
      public static void createTeacher(Map attributes) throws IOException {
           Teacher teacher = new Teacher((int) attributes.get("id"),

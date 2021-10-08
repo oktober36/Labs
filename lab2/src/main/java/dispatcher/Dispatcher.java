@@ -26,12 +26,10 @@ public class Dispatcher {
                            } catch (IOException e) {System.out.println("Error in dispatcher create student");}
                        }
                    } else if (action.equals("edit")) {
-                       System.out.println("edit");
                        try {
                            PeopleService.edit(attributes);
                        } catch (IOException e) {System.out.println("Error in dispatcher edit");}
                    } else {
-                       System.out.println("delete");
                        PeopleService.delete((int) attributes.get("id"));
                    }
                }

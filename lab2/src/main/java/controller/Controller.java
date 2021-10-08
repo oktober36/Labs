@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public abstract class Controller {
-    private final static File DIR = new File("src/main/commands/");
+    private final static File DIR = new File("src/main/resources/commands/");
     public static Queue<Map<String, Object>> queue = new Queue<Map<String, Object>>();
 
     private static final String PATTERN1 = "create teacher \\d{1,4} ([A-Z][a-z]* ){2}[A-Z][a-z]*" +
@@ -114,8 +114,7 @@ public abstract class Controller {
                         attributes.put("workingHours", splitedLines[j]);
                     }
                 } else {
-                    if (j < splitedLines.length && Pattern.matches("(physics|math|coding):\\d(\\,|\\.)\\d{2}( " +
-                            "(physics|math|coding):\\d(\\,|\\.)\\d{2}){0,2}", splitedLines[j])) {
+                    if (j < splitedLines.length && Pattern.matches("(physics|math|coding)", splitedLines[j])) {
                         Map averageMarks = new HashMap();
                         Subjects[] subjects = new Subjects[(splitedLines.length - j)/2];
                         for (int k = j; k < splitedLines.length; k+=2) {
@@ -126,7 +125,10 @@ public abstract class Controller {
                         attributes.put("averageMarks", averageMarks);
                     }
                 }
-
+            }
+            if (Pattern.matches(PATTERN5, lines)){
+                attributes.put("action", splitedLines[0]);
+                attributes.put("id", Integer.valueOf(splitedLines[1]));
             }
             if (attributes.size() > 0)  queue.offer(attributes);
             files[i].delete();
