@@ -56,7 +56,7 @@ public class Main {
     public static boolean withTwoNumbers(String str, float[] list){
         if (str == null) return false;
 
-        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)?");
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)? -?\\d+(\\.\\d+)?.*");
         if (!pattern.matcher(str).matches()) return false;
 
         pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
