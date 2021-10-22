@@ -1,4 +1,4 @@
-package mainClasses;
+package peopleClasses;
 
 import java.util.Arrays;
 import java.util.HashMap;

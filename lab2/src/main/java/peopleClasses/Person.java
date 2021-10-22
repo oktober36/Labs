@@ -1,4 +1,4 @@
-package mainClasses;
+package peopleClasses;
 
 public class Person {
     private String fullName, phoneNumber;

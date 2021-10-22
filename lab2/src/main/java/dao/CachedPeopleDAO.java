@@ -1,6 +1,6 @@
-package DAO;
+package dao;
 
-import mainClasses.Person;
+import peopleClasses.Person;
 import java.util.HashMap;
 import java.util.Map;
 

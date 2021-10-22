@@ -1,7 +1,7 @@
-package DAO;
+package dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mainClasses.*;
+import peopleClasses.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,7 +14,6 @@ public class PeopleDAO implements Dao {
 
     @Override
     public <T extends Person> void save(T person, String type) throws IOException {
-        if (!(determineClass(person.getId()) == null))  return;
         ObjectMapper objectMapper = new ObjectMapper();
         String filename = person.getId() + type + ".json";
         File file = new File(filePath + filename);

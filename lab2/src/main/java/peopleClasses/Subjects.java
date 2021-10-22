@@ -1,4 +1,4 @@
-package mainClasses;
+package peopleClasses;
 
 public enum Subjects {
     physics,

@@ -1,4 +1,4 @@
-package mainClasses;
+package peopleClasses;
 
 public class Teacher extends Person{
     private Subjects subject;
