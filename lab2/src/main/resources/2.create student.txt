@@ -1,0 +1,1 @@
+create student Petrov Petr Petrovich 2001 82283221488 physics 4.10

@@ -1,0 +1,1 @@
+create teacher Petrov Ivan Petrovich 1980 82283221488 physics 08:00-17:40
