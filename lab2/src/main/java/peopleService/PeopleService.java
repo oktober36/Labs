@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class PeopleService {
-     private final static PeopleDAO dao = new PeopleDAO("src/main/resources/PersonsFiles/");
+     private final static String DIR_PATH = "src/main/resources/PersonsFiles/";
+     private final static PeopleDAO dao = new PeopleDAO(DIR_PATH);
 
 
      public static void createTeacher(Map attributes) throws IOException {
@@ -64,46 +65,23 @@ public abstract class PeopleService {
      public static void delete(int id) throws IOException {
           String type = dao.determineClass(id);
           if (type == null) Controller.returnError("Person with this id does not exist");
-          deleteId(id);
           dao.delete(id, type);
      }
 
+
+
      private static int nextId() throws IOException {
-          int returnedId = -1;
-          File file = new File("src/main/resources/PersonsFiles/ids.txt");
-          ObjectMapper mapper = new ObjectMapper();
-          ArrayList<Integer> ids;
-          if (new File("src/main/resources/PersonsFiles").listFiles().length == 1) {
-               ids = new ArrayList<>();
-          }
+          File dir = new File(DIR_PATH);
+          File[] persons = dir.listFiles();
+          if (persons.length == 0) return 0;
           else {
-               ids = mapper.readValue(file, ArrayList.class);
-          }
-          if (ids.size() == 0){
-               ids.add(0);
-               returnedId = 0;
-          }
-          for (int i = 0; i < ids.size(); i++) {
-               if (ids.get(i) != i) {
-                         returnedId = i;
-                         ids.add(i, i);
+               String currentId;
+               for (int i = 0; i < persons.length; i++) {
+                    currentId = persons[i].getName();
+                    if (Integer.valueOf(currentId.substring(0, currentId.length() - 6)) != i)
+                         return i;
                }
           }
-          if (returnedId == -1) {
-               returnedId = ids.size();
-               ids.add(ids.size());
-          }
-          mapper.writeValue(file, ids);
-          return returnedId;
-          }
-     private static void deleteId(int id) throws IOException {
-          File file = new File("src/main/resources/PersonsFiles/ids.txt");
-          ObjectMapper mapper = new ObjectMapper();
-          ArrayList<Integer> ids = null;
-          ids = mapper.readValue(file, ArrayList.class);
-          ids.remove((Integer) id);
-          mapper.writeValue(file, ids);
+          return persons.length;
      }
-
-
 }
