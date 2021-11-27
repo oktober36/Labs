@@ -1,0 +1,1 @@
+{"average marks":{"coding":5.0},"fullname":"Ivanov Ivan Ivanovich","phone number":89991231212,"birth year"}]
