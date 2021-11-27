@@ -12,7 +12,7 @@ public class Student extends Person{
         super(fullName, birthYear, phoneNumber);
 
         for (Float mark : averageMarks.values()){
-            if (mark < 2.00F || mark > 5.00) throw new IOException("Поле введено некорректно");
+            if (mark < 2.00F || mark > 5.00F) throw new IOException("Поле введено некорректно");
         }
 
         if (averageMarks == null) {
@@ -45,10 +45,15 @@ public class Student extends Person{
         if (student.getClass() == Student.class){
             if (this.fullName.equals(((Student) student).fullName)
                     && this.birthYear.equals(((Student) student).birthYear)
-                    && this.phoneNumber.equals(((Student) student).phoneNumber)
-                    && this.averageMarks.equals(((Student) student).averageMarks)
-                    && this.subjects.equals(( (Student) student).subjects))
-                return true;
+                    && this.phoneNumber.equals(((Student) student).phoneNumber))
+            {
+                if (subjects.size() != ((Student) student).subjects.size()) return false;
+                for (Subjects subject : subjects){
+                    if (!((Student) student).subjects.contains(subject)) return false;
+                    if (!((Student) student).averageMarks.get(subject).equals(averageMarks.get(subject))) return false;
+                }
+            }
+            return true;
         }
         return false;
     }

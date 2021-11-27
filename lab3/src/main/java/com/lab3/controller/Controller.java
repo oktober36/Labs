@@ -28,7 +28,7 @@ public class Controller {
     public String createPerson(@RequestBody String json) throws IOException {
         Map<String,Object> attributes;
         try {
-            attributes = new ObjectMapper().readValue(json, HashMap.class);
+            attributes = new ObjectMapper().readValue(json, Map.class);
         } catch (JsonProcessingException e) {
             throw new IOException("Неправильно задан json");
         }
@@ -41,7 +41,7 @@ public class Controller {
     public String getPerson(@RequestBody String json) throws IOException {
         Map<String, Object> attributes;
         try {
-            attributes = new ObjectMapper().readValue(json, HashMap.class);
+            attributes = new ObjectMapper().readValue(json, Map.class);
         } catch (JsonProcessingException e) {
             throw new IOException("Неправильно задан json");
         }
@@ -54,7 +54,7 @@ public class Controller {
     public String updatePerson(@RequestBody String json) throws IOException {
         Map<String, Object> attributes;
         try {
-            attributes = new ObjectMapper().readValue(json, HashMap.class);
+            attributes = new ObjectMapper().readValue(json, Map.class);
         } catch (JsonProcessingException e) {
             throw new IOException("Неправильно задан json");
         }
@@ -67,7 +67,7 @@ public class Controller {
     public String deletePerson(@RequestBody String json) throws IOException {
         Map<String, Object> attributes;
         try {
-            attributes = new ObjectMapper().readValue(json, HashMap.class);
+            attributes = new ObjectMapper().readValue(json, Map.class);
         } catch (JsonProcessingException e) {
             throw new IOException("Неправильно задан json");
         }
@@ -78,9 +78,40 @@ public class Controller {
     @ResponseBody
     public String readCache() throws IOException {
         CacheReader reader = CacheReader.INSTANCE;
-        List<List<HashMap<String, Object>>> listOfListsOfAttributes = new ArrayList<>();
-        List<String> errorFiles = reader.read(listOfListsOfAttributes);
-
-        return peopleService.toString();
+        StringBuilder report = new StringBuilder();
+        Map<String, Map <String, Map<String, Object>>> listOfListsOfAttributes = new HashMap();
+        Map<String, List<String>> errorFiles = reader.read(listOfListsOfAttributes);
+        if (listOfListsOfAttributes.size() != 0) {
+            for (String fileName : listOfListsOfAttributes.keySet()) {
+                if (errorFiles.keySet().contains(fileName)) continue;
+                for (String personName : listOfListsOfAttributes.get(fileName).keySet()) {
+                    try {
+                        peopleService.create(listOfListsOfAttributes.get(fileName).get(personName));
+                    } catch (IOException e) {
+                        StringBuilder errorReport = new StringBuilder();
+                        if (!errorFiles.keySet().contains(fileName)) errorFiles.put(fileName, new ArrayList<>());
+                        errorReport.append(personName);
+                        errorReport.append(" : ");
+                        errorReport.append(e.getMessage());
+                        errorFiles.get(fileName).add(errorReport.toString());
+                    }
+                }
+            }
+        }
+        if (errorFiles.size() != 0) {
+            report.append("Ошибки :\n");
+            for (String filename : errorFiles.keySet()) {
+                report.append("Файл ");
+                report.append(filename);
+                report.append("\n");
+                for (String error : errorFiles.get(filename)) {
+                    report.append(error);
+                    report.append("\n");
+                }
+            }
+            report.append("\n");
+        } else if (listOfListsOfAttributes.size() == 0) throw new IOException("Папка пустая");
+        report.append(peopleService.toString());
+        return report.toString();
     }
 }
